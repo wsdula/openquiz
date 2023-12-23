@@ -4,10 +4,6 @@
 
 # Importing the necessary modules
 import tkinter as tk
-import os
-import sys
-import time
-import utils
 
 window = tk.Tk()
 greeting = tk.Label(text="Welcome to the Quiz Game!")
