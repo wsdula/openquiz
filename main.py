@@ -4,11 +4,12 @@
 
 # Importing the necessary modules
 import tkinter as tk
+import utils
 
-window = tk.Tk()
-greeting = tk.Label(text="Welcome to the Quiz Game!")
-greeting.pack()
-
-window.title("Quiz Game")
-window.geometry("500x500")
-window.mainloop()
+# window = tk.Tk()
+# greeting = tk.Label(text="Welcome to the Quiz Game!")
+# greeting.pack()
+#
+# window.title("Quiz Game")
+# window.geometry("500x500")
+# window.mainloop()

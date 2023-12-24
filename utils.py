@@ -55,6 +55,7 @@ class Game:
     def __init__(self, rounds: dict[int, Round], teams: dict[int, Team]):
         self.rounds = rounds
         self.teams = teams
+        self.score = {t: 0 for t in teams}
 
     def __str__(self):
         return f"Game: {self.rounds}"
