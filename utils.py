@@ -8,11 +8,13 @@ class Question:
 
 
 # Tossup Questions are worth 10 points and have bonus questions if answered correctly
-class Tossup(Question):
-    def __init__(self, prompt, answer, bonuses: list[Question]):
-        super().__init__(prompt, answer)
-        self.value = 10
+class Tossup:
+    def __init__(self, faceoff: Question, bonuses: list[Question]):
+        self.faceoff = faceoff
         self.bonus = bonuses
+        self.value = (
+            10  # FIXME: Faceoff has multiple values but there should only be one
+        )
 
         tv = self.value
         for b in self.bonus:
@@ -52,10 +54,12 @@ class Team:
 
 # Games contain rounds and are played by teams
 class Game:
-    def __init__(self, rounds: dict[int, Round], teams: dict[int, Team]):
+    """
+    This class represents a game. It contains rounds and teams.
+    """
+
+    def __init__(self, rounds: dict[int, Round]):
         self.rounds = rounds
-        self.teams = teams
-        self.score = {t: 0 for t in teams}
 
     def __str__(self):
         return f"Game: {self.rounds}"
