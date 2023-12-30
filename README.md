@@ -11,11 +11,11 @@ OpenQuiz is a quiz app that allows for the building and playing of quiz bowl for
 - [ ] Create a working interface for playing quiz bowl games.
 - [ ] Develop a system for creating and editing questions.
 - [ ] Formally define a data structure for storing questions.
-- [ ] design a daatabase schema for storing questions.
+- [ ] Design a database schema for storing questions.
 - [ ] Create a web interface for creating and editing questions.
 
 ## Long Term Goals
 
 - [ ] Create a system for sharing questions.
 - [ ] Create a system for sharing games. (i.e. a game file)
-- [ ] Create a system for tracking player stats.
+- [ ] Create a system for tracking player stats
