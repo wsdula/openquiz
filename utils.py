@@ -29,6 +29,12 @@ class Tossup:
                 )
 
 
+class Category:
+    def __init__(self) -> None:
+        pass
+        # TODO fill out these methods please.
+
+
 # rounds contain tossups and bonuses
 class Round:
     def __init__(self, tossups: list[Tossup]):
@@ -72,7 +78,23 @@ class Game:
         return f"Game: {self.rounds}"
 
 
-def make_game(input_file="test.json") -> Game:
+def build_tossup() -> Tossup:
+    """
+    This function builds a Tossup object from a group of questions
+    """
+    # How???
+    # I think it's mainly going to be UUID based
+    pass
+
+
+def build_round() -> Round:
+    """
+    This function assembles a series of questions into a round object
+    """
+    pass
+
+
+def build_game(input_file="test.json") -> Game:
     """
     This function takes questions and turns them into a game object
     """
