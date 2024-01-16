@@ -3,8 +3,8 @@
 # Each question is worth 10 points
 
 # Importing the necessary modules
-import tkinter as tk
-import utils
+# import utils
+import ui
 
 # window = tk.Tk()
 # greeting = tk.Label(text="Welcome to the Quiz Game!")
@@ -13,3 +13,7 @@ import utils
 # window.title("Quiz Game")
 # window.geometry("500x500")
 # window.mainloop()
+
+if __name__ == "__main__":
+    app = ui.App()
+    app.mainloop()

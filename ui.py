@@ -4,44 +4,63 @@
 
 # Importing the necessary modules
 import tkinter as tk
+
 # import utils
 
-# root = tk.Tk()
-# root.title("Quiz Game")
-# root.geometry("500x500")
-# # root.config(bg="skyblue")
-#
-# greeting = tk.Label(text="Welcome to the Quiz Game!")
-# greeting.pack()
-#
-# root.mainloop()
 
-def start_game():
-  game_window = tk.Toplevel(root)
-  game_window.title("Game Window")
-  
-  # Add your game logic here
-  game_label = tk.Label(game_window, text="Game in progress!", font=("Helvetica", 16))
-  game_label.pack(pady=20)
 
-def exit_game():
-  root.destroy()
+class App(tk.Tk):
+    def __init__(self):
+        tk.Tk.__init__(self)
+        self.title("Quiz Game")
+        self.geometry("500x500")
+        container = tk.Frame(self)
+        container.config(bg="skyblue")
 
-# Create the main window
-root = tk.Tk()
-root.title("Welcome to the Game")
+        container.pack(side="top", fill="both", expand=True)
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
 
-# Create a label for the welcome message
-welcome_label = tk.Label(root, text="Welcome to the Game!", font=("Helvetica", 16))
-welcome_label.pack(pady=20)
+        self.frames = {}
+        for F in (StartPage, PageOne):
+            page_name = F.__name__
+            frame = F(parent=container, controller=self)
+            self.frames[page_name] = frame
+            frame.grid(row=0, column=0, sticky="nsew")
 
-# Create a button to start the game
-start_button = tk.Button(root, text="Start Game", command=start_game)
-start_button.pack(pady=10)
+        self.show_frame("StartPage")
 
-# Create a button to exit the game
-exit_button = tk.Button(root, text="Exit", command=exit_game)
-exit_button.pack(pady=10)
+    def show_frame(self, page_name):
+        '''Show a frame for the given page name'''
+        frame = self.frames[page_name]
+        frame.tkraise()
 
-# Run the main loop
-root.mainloop()
+    def close_out(self):
+        self.destroy()
+
+class StartPage(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        label = tk.Label(self, text="Welcome to the Quiz Game!", font=("Helvetica", 16))
+        label.pack(side="top", fill="x", pady=20)
+
+        button1 = tk.Button(self, text="Start Game", command=lambda: controller.show_frame("PageOne"))
+        button2 = tk.Button(self, text="View Games", command=lambda: controller.show_frame("PageTwo"))
+        button3 = tk.Button(self, text="Edit Player Database", command=lambda: controller.show_frame("PageThree"))
+        button4 = tk.Button(self, text="Exit", command=lambda: controller.close_out())
+        button1.pack(pady=10)
+        button2.pack(pady=10)
+        button3.pack(pady=10)
+        button4.pack(pady=10)
+
+class PageOne(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        # Add game logic here
+        game_label = tk.Label(self, text="Game in progress!", font=("Helvetica", 16))
+        game_label.pack(pady=20)
+        button = tk.Button(self, text="Go to the start page", command=lambda: controller.show_frame("StartPage"))
+        button.pack(pady=10)
