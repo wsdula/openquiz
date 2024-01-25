@@ -76,4 +76,4 @@ class PageOne(tk.Frame):
             text="Go to the start page",
             command=lambda: controller.show_frame("StartPage"),
         )
-        button.pack(pady=10)
+        button.pack(pady=10, anchor="se")
