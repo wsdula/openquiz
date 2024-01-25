@@ -1,3 +1,7 @@
+import json
+import numpy as np
+
+
 # Questions have a prompt and an answer and a value
 class Question:
     def __init__(self, prompt, answer, value=5):
@@ -23,6 +27,12 @@ class Tossup:
                 raise ValueError(
                     "Total value of Tossup and bonuses cannot exceed 30 points"
                 )
+
+
+class Category:
+    def __init__(self) -> None:
+        pass
+        # TODO fill out these methods please.
 
 
 # rounds contain tossups and bonuses
@@ -55,7 +65,7 @@ class Team:
 # Games contain rounds and are played by teams
 class Game:
     """
-    This class represents a game. It contains rounds and teams.
+    This class represents a game. It contains rounds.
     """
 
     def __init__(self, rounds: dict[int, Round]):
@@ -66,3 +76,40 @@ class Game:
 
     def __repr__(self):
         return f"Game: {self.rounds}"
+
+
+def build_tossup() -> Tossup:
+    """
+    This function builds a Tossup object from a group of questions
+    """
+    # How???
+    # I think it's mainly going to be UUID based
+    pass
+
+
+def build_round() -> Round:
+    """
+    This function assembles a series of questions into a round object
+    """
+    pass
+
+
+def build_game(input_file="test.json") -> Game:
+    """
+    This function takes questions and turns them into a game object
+    """
+    with open(input_file) as f:
+        questions = []
+        data = json.load(f)
+
+        for i in data["questions"]:
+            q = Question(i["prompt"], i["answer"])
+            questions.append(q)
+
+        f.close()
+
+    t = [Tossup(faceoff=x[0], bonuses=x[1:]) for x in np.array_split(questions, 3)]
+    r = {i: Round(tossups=[t[i]]) for i in range(len(t))}
+    g = Game(r)
+
+    return g
