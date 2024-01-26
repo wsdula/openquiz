@@ -1,5 +1,6 @@
 import utils
 import json
+import numpy
 
 
 # Tossup Questions are worth 10 points and have bonus questions if answered correctly
