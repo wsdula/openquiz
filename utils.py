@@ -1,7 +1,3 @@
-import json
-import numpy as np
-
-
 # Questions have a prompt and an answer and a value
 class Question:
     def __init__(self, prompt, answer, value=10):
@@ -29,5 +25,15 @@ class Team:
 
     def __repr__(self):
         return f"Team: {self.name}"
+
+
+def get_questions_from_file(filename: str) -> list[Question]:
+    """Reads questions from a file and returns a list of Question objects"""
+    questions = []
+    with open(filename, "r") as f:
+        for line in f:
+            prompt, answer = line.split(";")
+            questions.append(Question(prompt, answer))
+    return questions
 
 
