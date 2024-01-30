@@ -50,6 +50,8 @@ class Team:
 
 def get_questions_from_file(filename: str) -> list[Question]:
     """Reads questions from a file and returns a list of Question objects"""
+    # NOTE This is a good place to use the strategy pattern
+    # NOTE This will eventually be a paired with a database call
     questions = []
     if filename.endswith(".txt"):
         with open(filename, "r") as f:
