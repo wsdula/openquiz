@@ -1,7 +1,11 @@
+from typing import List, Union
+
+
 # Questions have a prompt and an answer and a value
 class Question:
     def __init__(self, prompt, answer, value=10, **kwargs):
-        self.id = None  # unique identifier for each Question in database
+        # NOTE: Eventually this will be a unique identifier for each Question in database
+        self.id = None
         self.prompt = prompt
         self.answer = answer
         self.value = value
@@ -19,8 +23,9 @@ class Player:
 
 
 class Team:
-    # TODO: Change to make use of Player class
-    def __init__(self, name: str, members: list[Player], score: int = 0, **kwargs):
+    def __init__(
+        self, name: str, members: Union[Player, List[Player]], score: int = 0, **kwargs
+    ):
         self.name = name
         self.members = members
         self.score = score
@@ -35,7 +40,6 @@ class Team:
 
     # NOTE: Opportunity for the strategy pattern???
     def UpdateTeamScore(self):
-        self.score = sum(member.score for member in self.members)
         if isinstance(self.members, list):
             self.score = sum(member.score for member in self.members)
         elif isinstance(self.members, Player):
