@@ -32,6 +32,22 @@ def correct_answer(team: utils.Team, player: utils.Player, question: utils.Quest
     team.UpdateTeamScore()
 
 
+def pick_player(team):
+    if isinstance(team.members, list):
+        while True:
+            try:
+                _ = input("Which player answered? (enter number): ")
+                player = team.members[int(_) - 1]
+                break
+            except (IndexError,ValueError,TypeError):
+                print("Please enter a number that corresponds to a player")
+
+    elif isinstance(team.members, utils.Player):
+        player = team.members
+    else:
+        player = None
+    return team, player
+
 def save_game():
     """
     This function saves the game
