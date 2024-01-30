@@ -13,20 +13,23 @@ def setup_game(filename: str = test_questions, players: list[str] = test_player)
     questions = utils.get_questions_from_file(filename)
     members = [utils.build_player(name) for name in players]
     teamList = [utils.Team("Team 1", members[0]), utils.Team("Team 2", members[1])]
-    return utils.Game(teams = teamList, rounds = Round(questions), flag = True)
+    return utils.Game(teams=teamList, rounds=Round(questions), flag=True)
 
-def next_round():
+
+def wrong_answer():
     """
-    This function takes the game to the next round
+    This function is called when the user chooses the wrong answer
+    Default behavior is to do nothing
     """
     pass
 
 
-def end_game():
+def correct_answer(team: utils.Team, player: utils.Player, question: utils.Question):
     """
-    This function ends the game
+    This function is called when the user chooses the correct answer
     """
-    pass
+    player.score += question.value
+    team.UpdateTeamScore()
 
 
 def save_game():
@@ -36,29 +39,8 @@ def save_game():
     pass
 
 
-def update_score():
-    """
-    This function updates the score
-    """
-    pass
-
-
 def change_score():
     """
     This function changes the score
-    """
-    pass
-
-
-def wrong_answer():
-    """
-    This function is called when the user chooses the wrong answer
-    """
-    pass
-
-
-def correct_answer():
-    """
-    This function is called when the user chooses the correct answer
     """
     pass
