@@ -42,11 +42,9 @@ def pick_player(team):
             except (IndexError,ValueError,TypeError):
                 print("Please enter a number that corresponds to a player")
 
-    elif isinstance(team.members, utils.Player):
-        player = team.members
     else:
-        player = None
-    return team, player
+        player = team.members
+    return player
 
 def save_game():
     """
