@@ -1,59 +1,36 @@
-import json
-import numpy as np
+from typing import List, Union
 
 
 # Questions have a prompt and an answer and a value
 class Question:
-    def __init__(self, prompt, answer, value=5):
-        self.id = None  # unique identifier for each Question in database
+    def __init__(self, prompt, answer, value=10, **kwargs):
+        # NOTE: Eventually this will be a unique identifier for each Question in database
+        self.id = None
         self.prompt = prompt
         self.answer = answer
         self.value = value
+        for k, v in kwargs.items():
+            setattr(self, k, v)
 
 
-# Tossup Questions are worth 10 points and have bonus questions if answered correctly
-class Tossup:
-    def __init__(self, faceoff: Question, bonuses: list[Question]):
-        self.faceoff = faceoff
-        self.bonus = bonuses
-        self.value = (
-            10  # FIXME: Faceoff has multiple values but there should only be one
-        )
-
-        tv = self.value
-        for b in self.bonus:
-            tv += b.value
-            if tv > 30:
-                raise ValueError(
-                    "Total value of Tossup and bonuses cannot exceed 30 points"
-                )
-
-
-class Category:
-    def __init__(self) -> None:
-        pass
-        # TODO fill out these methods please.
-
-
-# rounds contain tossups and bonuses
-class Round:
-    def __init__(self, tossups: list[Tossup]):
-        self.tossups = tossups
-        self.bonuses = []
-        for t in self.tossups:
-            self.bonuses.extend(t.bonus)
-
-    def __str__(self):
-        return f"Round: {self.tossups}"
-
-    def __repr__(self):
-        return f"Round: {self.tossups}"
+class Player:
+    # TODO: Redefine this class to be more useful
+    def __init__(self, name: str, score: int = 0, **kwargs):
+        self.name = name
+        self.score = score
+        for k, v in kwargs.items():
+            setattr(self, k, v)
 
 
 class Team:
-    def __init__(self, name: str, players: list[str]):
+    def __init__(
+        self, name: str, members: Union[Player, List[Player]], score: int = 0, **kwargs
+    ):
         self.name = name
-        self.players = players
+        self.members = members
+        self.score = score
+        for k, v in kwargs.items():
+            setattr(self, k, v)
 
     def __str__(self):
         return f"Team: {self.name}"
@@ -61,55 +38,52 @@ class Team:
     def __repr__(self):
         return f"Team: {self.name}"
 
+    # NOTE: Opportunity for the strategy pattern???
+    def UpdateTeamScore(self):
+        if isinstance(self.members, list):
+            self.score = sum(member.score for member in self.members)
+        elif isinstance(self.members, Player):
+            self.score = self.members.score
+        else:
+            raise TypeError("Team members must be a Player or a list of Players")
 
-# Games contain rounds and are played by teams
+
+class Round:
+    def __init__(self, questions: List[Question], **kwargs):
+        self.questions = questions
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+
+
 class Game:
-    """
-    This class represents a game. It contains rounds.
-    """
-
-    def __init__(self, rounds: dict[int, Round]):
+    def __init__(self, teams: List[Team], rounds: Union[Round, List[Round]], **kwargs):
+        self.teams = teams
         self.rounds = rounds
-
-    def __str__(self):
-        return f"Game: {self.rounds}"
-
-    def __repr__(self):
-        return f"Game: {self.rounds}"
+        for k, v in kwargs.items():
+            setattr(self, k, v)
 
 
-def build_tossup() -> Tossup:
-    """
-    This function builds a Tossup object from a group of questions
-    """
-    # How???
-    # I think it's mainly going to be UUID based
-    pass
+def get_questions_from_file(filename: str) -> list[Question]:
+    """Reads questions from a file and returns a list of Question objects"""
+    # NOTE This is a good place to use the strategy pattern
+    # NOTE This will eventually be a paired with a database call
+    questions = []
+    if filename.endswith(".txt"):
+        with open(filename, "r") as f:
+            # FIXME: This is not the best way to read from a file
+            for line in f:
+                prompt, answer = line.split(";")
+                questions.append(Question(prompt, answer))
+    elif filename.endswith(".json"):
+        with open(filename, "r") as f:
+            import json
+
+            g = json.load(f)
+            for q in g["questions"]:
+                questions.append(Question(**q))
+    return questions
 
 
-def build_round() -> Round:
-    """
-    This function assembles a series of questions into a round object
-    """
-    pass
-
-
-def build_game(input_file="test.json") -> Game:
-    """
-    This function takes questions and turns them into a game object
-    """
-    with open(input_file) as f:
-        questions = []
-        data = json.load(f)
-
-        for i in data["questions"]:
-            q = Question(i["prompt"], i["answer"])
-            questions.append(q)
-
-        f.close()
-
-    t = [Tossup(faceoff=x[0], bonuses=x[1:]) for x in np.array_split(questions, 3)]
-    r = {i: Round(tossups=[t[i]]) for i in range(len(t))}
-    g = Game(r)
-
-    return g
+def build_player(name: str) -> Player:
+    """Builds a Player object"""
+    return Player(name)

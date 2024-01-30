@@ -2,6 +2,8 @@
 
 OpenQuiz is a quiz app that allows for the building and playing of quiz bowl format games.
 
+OpenQuiz is designed to take in formats and settings and produce games. This is achieved through creating extendable base classes for game objects and UI elements that can be rendered on game start.
+
 ## Current Status
 
 - The app is currently in the early stages of development. The goal is to have a working prototype before the end of January.
