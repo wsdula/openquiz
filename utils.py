@@ -48,6 +48,21 @@ class Team:
             raise TypeError("Team members must be a Player or a list of Players")
 
 
+class Round:
+    def __init__(self, questions: List[Question], **kwargs):
+        self.questions = questions
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+
+
+class Game:
+    def __init__(self, teams: List[Team], rounds: Union[Round, List[Round]], **kwargs):
+        self.teams = teams
+        self.rounds = rounds
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+
+
 def get_questions_from_file(filename: str) -> list[Question]:
     """Reads questions from a file and returns a list of Question objects"""
     # NOTE This is a good place to use the strategy pattern
@@ -69,7 +84,6 @@ def get_questions_from_file(filename: str) -> list[Question]:
     return questions
 
 
-def create_player(name: str) -> Player:
-    """Creates a Player object"""
 def build_player(name: str) -> Player:
+    """Builds a Player object"""
     return Player(name)
