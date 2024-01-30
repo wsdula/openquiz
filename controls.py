@@ -3,14 +3,17 @@
 import utils
 
 test_questions = "test.json"
-test_player = ["VillagerA","VillagerB"]
+test_player = ["VillagerA", "VillagerB"]
 
-def start_game():
-    """
-    This function starts the game
-    """
-    pass
 
+def setup_game(filename: str = test_questions, players: list[str] = test_player):
+    """
+    This function sets up the game using the utils.py functions
+    """
+    questions = utils.get_questions_from_file(filename)
+    members = [utils.build_player(name) for name in players]
+    teams = [utils.Team("Team 1", members[0]), utils.Team("Team 2", members[1])]
+    return utils.Game(teams, Round(questions))
 
 def next_round():
     """
