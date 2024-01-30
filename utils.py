@@ -33,8 +33,15 @@ class Team:
     def __repr__(self):
         return f"Team: {self.name}"
 
+    # NOTE: Opportunity for the strategy pattern???
     def UpdateTeamScore(self):
         self.score = sum(member.score for member in self.members)
+        if isinstance(self.members, list):
+            self.score = sum(member.score for member in self.members)
+        elif isinstance(self.members, Player):
+            self.score = self.members.score
+        else:
+            raise TypeError("Team members must be a Player or a list of Players")
 
 
 def get_questions_from_file(filename: str) -> list[Question]:
