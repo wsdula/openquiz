@@ -47,11 +47,19 @@ class Team:
 def get_questions_from_file(filename: str) -> list[Question]:
     """Reads questions from a file and returns a list of Question objects"""
     questions = []
-    with open(filename, "r") as f:
-        # FIXME: This is not the best way to read from a file
-        for line in f:
-            prompt, answer = line.split(";")
-            questions.append(Question(prompt, answer))
+    if filename.endswith(".txt"):
+        with open(filename, "r") as f:
+            # FIXME: This is not the best way to read from a file
+            for line in f:
+                prompt, answer = line.split(";")
+                questions.append(Question(prompt, answer))
+    elif filename.endswith(".json"):
+        with open(filename, "r") as f:
+            import json
+
+            g = json.load(f)
+            for q in g["questions"]:
+                questions.append(Question(**q))
     return questions
 
 
