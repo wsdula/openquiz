@@ -2,6 +2,8 @@
 
 import utils
 
+test_questions = "test.json"
+test_player = ["VillagerA","VillagerB"]
 
 def start_game():
     """
