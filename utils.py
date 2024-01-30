@@ -71,4 +71,5 @@ def get_questions_from_file(filename: str) -> list[Question]:
 
 def create_player(name: str) -> Player:
     """Creates a Player object"""
+def build_player(name: str) -> Player:
     return Player(name)
