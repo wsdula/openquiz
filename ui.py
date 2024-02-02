@@ -4,6 +4,7 @@
 
 # Importing the necessary modules
 import tkinter as tk
+import format.default.ui as game_ui
 
 # import utils
 
@@ -21,7 +22,7 @@ class App(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (StartPage, PageOne):
+        for F in (StartPage, game_ui.GamePage):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -63,17 +64,3 @@ class StartPage(tk.Frame):
         button4.pack(pady=10)
 
 
-class PageOne(tk.Frame):
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
-        self.controller = controller
-
-        # Add game logic here
-        game_label = tk.Label(self, text="Game in progress!", font=("Helvetica", 16))
-        game_label.pack(pady=20)
-        button = tk.Button(
-            self,
-            text="Go to the start page",
-            command=lambda: controller.show_frame("StartPage"),
-        )
-        button.pack(pady=10, anchor="se")
