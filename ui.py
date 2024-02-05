@@ -4,7 +4,7 @@
 
 # Importing the necessary modules
 import tkinter as tk
-import format.default.ui as game_ui
+from format.default.ui import GamePage
 
 # import utils
 
@@ -22,7 +22,7 @@ class App(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (StartPage, game_ui.GamePage):
+        for F in (StartPage, GamePage):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -47,7 +47,7 @@ class StartPage(tk.Frame):
         label.pack(side="top", fill="x", pady=20)
 
         button1 = tk.Button(
-            self, text="Start Game", command=lambda: controller.show_frame("PageOne")
+            self, text="Start Game", command=lambda: controller.show_frame("GamePage")
         )
         button2 = tk.Button(
             self, text="View Games", command=lambda: controller.show_frame("PageTwo")
