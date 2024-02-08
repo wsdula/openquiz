@@ -3,6 +3,9 @@ import controls
 
 
 class GamePage(tk.Frame):
+    qVar = tk.StringVar()
+    scoreVar = tk.StringVar()
+
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
@@ -10,14 +13,20 @@ class GamePage(tk.Frame):
         # game_label = tk.Label(self, text="Game in progress!", font=("Helvetica", 16))
         # game_label.pack(pady=20)
         # this is where the question will be displayed
-        qFrame = tk.Frame(self)
-        qText = tk.Label(qFrame, text="Question goes here", font=("Helvetica", 16))
+        qFrame = tk.Frame(self, bg="blue")
+        self.qVar.set("Question goes here")
+        qText = tk.Label(qFrame, textvariable=self.qVar, font=("Helvetica", 16))
+        qFrame.pack(pady=20)
         qText.pack(pady=20)
 
-        scoreFrame = tk.Frame(self)
-        scoreText = tk.Label(scoreFrame, text="Score goes here", font=("Helvetica", 16))
+        scoreFrame = tk.Frame(self, bg="green")
+        self.scoreVar.set("Score goes here")
+        scoreText = tk.Label(
+            scoreFrame, textvariable=self.scoreVar, font=("Helvetica", 16)
+        )
         correct_button = tk.Button(scoreFrame, text="Correct")
         wrong_button = tk.Button(scoreFrame, text="Wrong")
+        scoreFrame.pack(pady=20)
         scoreText.pack(pady=20)
         correct_button.pack(pady=10)
         wrong_button.pack(pady=10)
@@ -29,21 +38,16 @@ class GamePage(tk.Frame):
         )
         button.pack(pady=10, anchor="se")
 
-        set_game = controls.setup_game()
-        self.gameLoop(set_game)
+        self.gameLoop(controls.setup_game())
 
     def gameLoop(self, game):
         while game.flag:
             for question in game.rounds.questions:
-                print(question.prompt)
-                while True:
-                    _ = input("Which team answered? (enter number): ")
-                    try:
-                        team = game.teams[int(_) - 1]
-                        player = controls.pick_player(team)
-                        break
-                    except (IndexError, ValueError, TypeError):
-                        print("Please enter a number that corresponds to a team")
+                self.qVar.set(question.prompt)
+                # get result from correct_button or wrong_button and proceed accordingly
+                # if correct_button: controls.correct_answer(), which updates the player and team score, then self.qVar.set(game.questions.next.prompt)
+                # if wrong_button: controls.wrong_answer() then self.qVar.set(game.questions.next.prompt)
+                # requires making a listener for each button, should not be housed in controls.py
 
                 while True:
                     answer = input("Was the answer correct? (y/n): ")
