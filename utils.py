@@ -24,7 +24,7 @@ class Player:
 
 class Team:
     def __init__(
-        self, name: str, members: Union[Player, List[Player]], score: int = 0, **kwargs
+        self, name: str, members: List[Player], score: int = 0, **kwargs
     ):
         self.name = name
         self.members = members
@@ -40,12 +40,7 @@ class Team:
 
     # NOTE: Opportunity for the strategy pattern???
     def UpdateTeamScore(self):
-        if isinstance(self.members, list):
-            self.score = sum(member.score for member in self.members)
-        elif isinstance(self.members, Player):
-            self.score = self.members.score
-        else:
-            raise TypeError("Team members must be a Player or a list of Players")
+        self.score = sum(member.score for member in self.members)
 
 
 class Round:
