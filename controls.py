@@ -12,7 +12,7 @@ def setup_game(filename: str = test_questions, players: list[str] = test_player)
     """
     questions = utils.get_questions_from_file(filename)
     members = [utils.build_player(name) for name in players]
-    teamList = [utils.Team("Team 1", members[0]), utils.Team("Team 2", members[1])]
+    teamList = [utils.Team("Team 1", [members[0]]), utils.Team("Team 2", [members[1]])]
     return utils.Game(teams=teamList, rounds=utils.Round(questions), flag=True)
 
 
