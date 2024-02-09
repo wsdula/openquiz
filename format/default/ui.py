@@ -4,16 +4,16 @@ import controls
 
 
 class GamePage(tk.Frame):
-    def __init__(self, parent: tk.Frame, controller: tk.Frame) -> None:
+    def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        self._controller = controller
+        self.controller = controller
         self.qVar = tk.StringVar()
         self.scoreVar = tk.StringVar()
         self.createWidgets()
         self.gameLoop(controls.setup_game())
 
     def createWidgets(self):
-        controller = self._controller
+        controller = self.controller
         self.qFrame = tk.Frame(self, bg="blue")
         self.qVar.set("Question goes here")
         self.qText = tk.Label(
@@ -32,11 +32,12 @@ class GamePage(tk.Frame):
         self.scoreText.pack(pady=20)
         self.correct_button.pack(pady=10)
         self.wrong_button.pack(pady=10)
-        button = tk.Button(
+        exitbutton = tk.Button(
+            self,
             text="Go to the start page",
             command=lambda: controller.show_frame("StartPage"),
         )
-        button.pack(pady=10, anchor="se")
+        exitbutton.pack(pady=11, anchor="se")
 
     def gameLoop(self, game):
         while game.flag:
@@ -47,8 +48,8 @@ class GamePage(tk.Frame):
                 # alternate between teams
                 team = game.teams[game.rounds.questions.index(question) % team_count]
                 # alternate between players
-                player = team.players[
-                    game.rounds.questions.index(question) % len(team.players)
+                player = team.members[
+                    game.rounds.questions.index(question) % len(team.members)
                 ]
                 self.correct_button.configure(
                     command=lambda: [
