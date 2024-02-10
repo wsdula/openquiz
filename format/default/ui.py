@@ -42,7 +42,7 @@ class GamePage(tk.Frame):
         exitbutton = tk.Button(
             self,
             text="Go to the start page",
-            command=lambda: self.parent.tkraise(),
+            command=lambda: self.controller.show_frame("StartPage"),
         )
         exitbutton.pack(pady=11, anchor="se")
 
