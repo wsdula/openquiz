@@ -5,15 +5,22 @@ import controls
 
 class GamePage(tk.Frame):
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
+        self.parent = parent
+        tk.Frame.__init__(self, self.parent)
         self.controller = controller
         self.qVar = tk.StringVar()
         self.scoreVar = tk.StringVar()
         self.createWidgets()
-        self.gameLoop(controls.setup_game())
 
     def createWidgets(self):
-        controller = self.controller
+        self.startButton = tk.Button(
+            self,
+            text="Start Game",
+            command=lambda: self.gameLoop(controls.setup_game()),
+        )
+        self.startButton.pack(pady=5, anchor="ne")
+        self.endButton = tk.Button(self, text="End Game")
+        self.endButton.pack(pady=5, anchor="ne")
         self.qFrame = tk.Frame(self, bg="blue")
         self.qVar.set("Question goes here")
         self.qText = tk.Label(
@@ -35,15 +42,21 @@ class GamePage(tk.Frame):
         exitbutton = tk.Button(
             self,
             text="Go to the start page",
-            command=lambda: controller.show_frame("StartPage"),
+            command=lambda: self.parent.tkraise(),
         )
         exitbutton.pack(pady=11, anchor="se")
 
     def gameLoop(self, game):
         while game.flag:
             team_count = len(game.teams)
+            okVar = tk.IntVar()
+
+            def endGame():
+                game.flag = False
+                okVar.set(2)
+
+            self.endButton.configure(command=lambda: endGame())
             for question in game.rounds.questions:
-                okVar = tk.IntVar()
                 self.qVar.set(question.prompt)
                 # alternate between teams
                 team = game.teams[game.rounds.questions.index(question) % team_count]

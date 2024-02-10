@@ -5,7 +5,6 @@
 # Importing the necessary modules
 import tkinter as tk
 from format.default.ui import GamePage
-
 # import utils
 
 
@@ -22,11 +21,12 @@ class App(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (StartPage, GamePage):
+        for F in [StartPage, GamePage]:
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
             frame.grid(row=0, column=0, sticky="nsew")
+            print(self.frames)
 
         self.show_frame("StartPage")
 
