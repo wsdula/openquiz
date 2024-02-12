@@ -3,7 +3,7 @@ from typing import List, Union
 
 # Questions have a prompt and an answer and a value
 class Question:
-    def __init__(self, prompt, answer, value=10, **kwargs):
+    def __init__(self, prompt, answer, value: int = 10, **kwargs):
         # NOTE: Eventually this will be a unique identifier for each Question in database
         self.id = None
         self.prompt = prompt
@@ -23,9 +23,7 @@ class Player:
 
 
 class Team:
-    def __init__(
-        self, name: str, members: List[Player], score: int = 0, **kwargs
-    ):
+    def __init__(self, name: str, members: List[Player], score: int = 0, **kwargs):
         self.name = name
         self.members = members
         self.score = score
