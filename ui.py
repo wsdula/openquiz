@@ -26,7 +26,7 @@ class App(tk.Tk):
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
             frame.grid(row=0, column=0, sticky="nsew")
-            print(self.frames)
+            # print(self.frames)
 
         self.show_frame("StartPage")
 

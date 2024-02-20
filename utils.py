@@ -12,6 +12,14 @@ class Question:
         for k, v in kwargs.items():
             setattr(self, k, v)
 
+    @property
+    def value(self):
+        return self._value
+    @value.setter
+    def value(self, value):
+        if value < 0:
+            raise ValueError("Value cannot be less than 0")
+        self._value = value
 
 class Player:
     # TODO: Redefine this class to be more useful
@@ -21,6 +29,14 @@ class Player:
         for k, v in kwargs.items():
             setattr(self, k, v)
 
+    @property
+    def score(self):
+        return self._score
+    @score.setter
+    def score(self, score):
+        if score < 0:
+            raise ValueError("Score cannot be less than 0")
+        self._score = score
 
 class Team:
     def __init__(self, name: str, members: List[Player], score: int = 0, **kwargs):
@@ -35,6 +51,15 @@ class Team:
 
     def __repr__(self):
         return f"Team: {self.name}"
+
+    @property
+    def score(self):
+        return self._score
+    @score.setter
+    def score(self, score):
+        if score < 0:
+            raise ValueError("Score cannot be less than 0")
+        self._score = score
 
     # NOTE: Opportunity for the strategy pattern???
     def UpdateTeamScore(self):

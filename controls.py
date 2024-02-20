@@ -10,6 +10,8 @@ def setup_game(filename: str = test_questions, players: list[str] = test_player)
     """
     This function sets up the game using the utils.py functions
     """
+    if filename == "":
+        filename = test_questions
     questions = utils.get_questions_from_file(filename)
     members = [utils.build_player(name) for name in players]
     teamList = [utils.Team("Team 1", [members[0]]), utils.Team("Team 2", [members[1]])]
@@ -28,8 +30,10 @@ def correct_answer(team: utils.Team, player: utils.Player, question: utils.Quest
     """
     This function is called when the user chooses the correct answer
     """
-    player.score += question.value
+    value = question.value
+    player.score += value
     team.UpdateTeamScore()
+
 
 
 def pick_player(team):

@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import filedialog
 
 import controls
 
@@ -10,17 +11,32 @@ class GamePage(tk.Frame):
         self.controller = controller
         self.qVar = tk.StringVar()
         self.scoreVar = tk.StringVar()
+        self.file = ""
         self.createWidgets()
 
     def createWidgets(self):
+        # game page frame
         self.startButton = tk.Button(
             self,
             text="Start Game",
-            command=lambda: self.gameLoop(controls.setup_game()),
+            command=lambda: self.gameLoop(controls.setup_game(self.file)),
         )
         self.startButton.pack(pady=5, anchor="ne")
+        # command for end game button is set in gameLoop
         self.endButton = tk.Button(self, text="End Game")
         self.endButton.pack(pady=5, anchor="ne")
+
+        def uploadGame():
+            self.file = filedialog.askopenfilename(
+                initialdir="./",
+                title="Select a game file",
+                filetypes=[("JSON files", "*.json"), ("All files", "*.*")],
+            )
+
+        self.uploadButton = tk.Button(self, text="Upload Game", command=uploadGame)
+        self.uploadButton.pack(pady=5, anchor="ne")
+
+        # question frame
         self.qFrame = tk.Frame(self, bg="blue")
         self.qVar.set("Question goes here")
         self.qText = tk.Label(
@@ -28,6 +44,8 @@ class GamePage(tk.Frame):
         )
         self.qFrame.pack(pady=20)
         self.qText.pack(pady=20)
+
+        # score frame
         self.scoreFrame = tk.Frame(self, bg="green")
         self.scoreVar.set("Score goes here")
         self.scoreText = tk.Label(
@@ -66,7 +84,7 @@ class GamePage(tk.Frame):
                 ]
                 self.correct_button.configure(
                     command=lambda: [
-                        controls.correct_answer(game, player, team),
+                        controls.correct_answer(team, player, question),
                         okVar.set(1),
                     ]
                 )
