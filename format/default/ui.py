@@ -35,6 +35,12 @@ class GamePage(tk.Frame):
 
         self.uploadButton = tk.Button(self, text="Upload Game", command=uploadGame)
         self.uploadButton.pack(pady=5, anchor="ne")
+        exitbutton = tk.Button(
+            self,
+            text="Go to the start page",
+            command=lambda: self.controller.show_frame("StartPage"),
+        )
+        exitbutton.pack(side=tk.BOTTOM, pady=11, anchor="e")
 
         # question frame
         self.qFrame = tk.Frame(self, bg="blue")
@@ -54,15 +60,9 @@ class GamePage(tk.Frame):
         self.correct_button = tk.Button(self.scoreFrame, text="Correct")
         self.wrong_button = tk.Button(self.scoreFrame, text="Wrong")
         self.scoreFrame.pack(pady=20)
-        self.scoreText.pack(pady=20)
         self.correct_button.pack(pady=10)
         self.wrong_button.pack(pady=10)
-        exitbutton = tk.Button(
-            self,
-            text="Go to the start page",
-            command=lambda: self.controller.show_frame("StartPage"),
-        )
-        exitbutton.pack(pady=11, anchor="se")
+        self.scoreText.pack(pady=20)
 
     def gameLoop(self, game):
         while game.flag:
@@ -82,6 +82,10 @@ class GamePage(tk.Frame):
                 player = team.members[
                     game.rounds.questions.index(question) % len(team.members)
                 ]
+                if game.rounds.questions.index(question) % team_count == 0:
+                    self.scoreVar.set(f"LEFT TEAM: {game.teams[0].score}  Right Team: {game.teams[1].score}")
+                if game.rounds.questions.index(question) % team_count == 1:
+                    self.scoreVar.set(f"Left Team: {game.teams[0].score}  RIGHT TEAM: {game.teams[1].score}")
                 self.correct_button.configure(
                     command=lambda: [
                         controls.correct_answer(team, player, question),
@@ -92,5 +96,6 @@ class GamePage(tk.Frame):
                     command=lambda: [controls.wrong_answer(), okVar.set(1)]
                 )
                 self.correct_button.wait_variable(okVar)
+                self.scoreVar.set(f"Left Team: {game.teams[0].score}  Right Team: {game.teams[1].score}")
 
             game.flag = False
