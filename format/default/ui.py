@@ -46,7 +46,7 @@ class GamePage(tk.Frame):
         self.qFrame = tk.Frame(self, bg="blue")
         self.qVar.set("Question goes here")
         self.qText = tk.Label(
-            self.qFrame, textvariable=self.qVar, font=("Helvetica", 16)
+            self.qFrame, textvariable=self.qVar, font=("Helvetica", 24)
         )
         self.qFrame.pack(pady=20)
         self.qText.pack(pady=20)
@@ -55,7 +55,7 @@ class GamePage(tk.Frame):
         self.scoreFrame = tk.Frame(self, bg="green")
         self.scoreVar.set("Score goes here")
         self.scoreText = tk.Label(
-            self.scoreFrame, textvariable=self.scoreVar, font=("Helvetica", 16)
+            self.scoreFrame, textvariable=self.scoreVar, font=("Helvetica", 24)
         )
         self.correct_button = tk.Button(self.scoreFrame, text="Correct")
         self.wrong_button = tk.Button(self.scoreFrame, text="Wrong")

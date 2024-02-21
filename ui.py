@@ -12,7 +12,7 @@ class App(tk.Tk):
     def __init__(self):
         tk.Tk.__init__(self)
         self.title("Quiz Game")
-        self.geometry("500x500")
+        self.geometry("800x800")
         container = tk.Frame(self)
         container.config(bg="skyblue")
 
