@@ -15,11 +15,13 @@ class Question:
     @property
     def value(self):
         return self._value
+
     @value.setter
     def value(self, value):
         if value < 0:
             raise ValueError("Value cannot be less than 0")
         self._value = value
+
 
 class Player:
     # TODO: Redefine this class to be more useful
@@ -32,11 +34,13 @@ class Player:
     @property
     def score(self):
         return self._score
+
     @score.setter
     def score(self, score):
         if score < 0:
             raise ValueError("Score cannot be less than 0")
         self._score = score
+
 
 class Team:
     def __init__(self, name: str, members: List[Player], score: int = 0, **kwargs):
@@ -55,6 +59,7 @@ class Team:
     @property
     def score(self):
         return self._score
+
     @score.setter
     def score(self, score):
         if score < 0:
@@ -87,19 +92,43 @@ def get_questions_from_file(filename: str) -> list[Question]:
     # NOTE This will eventually be a paired with a database call
     questions = []
     if filename.endswith(".txt"):
-        with open(filename, "r") as f:
-            # FIXME: This is not the best way to read from a file
-            for line in f:
-                prompt, answer = line.split(";")
-                questions.append(Question(prompt, answer))
+        questions = _questions_from_txt(filename)
+    elif filename.endswith(".xlsx"):
+        questions = _questions_from_xlsx(filename)
     elif filename.endswith(".json"):
-        with open(filename, "r") as f:
-            import json
-
-            g = json.load(f)
-            for q in g["questions"]:
-                questions.append(Question(**q))
+        questions = _questions_from_json(filename)
     return questions
+
+
+def _questions_from_txt(filename: str) -> list[Question]:
+    with open(filename, "r") as f:
+        # FIXME: This is not the best way to read from a file
+        questions = []
+        for line in f:
+            prompt, answer = line.split(";")
+            questions.append(Question(prompt, answer))
+        return questions
+
+
+def _questions_from_xlsx(filename: str) -> list[Question]:
+    import pandas as pd
+
+    questions = []
+    df = pd.read_excel(filename)
+    for _, row in df.iterrows():
+        questions.append(Question(row["prompt"], row["answer"], row["value"]))
+    return questions
+
+
+def _questions_from_json(filename: str) -> list[Question]:
+    with open(filename, "r") as f:
+        import json
+
+        questions = []
+        g = json.load(f)
+        for q in g["questions"]:
+            questions.append(Question(**q))
+        return questions
 
 
 def build_player(name: str) -> Player:
