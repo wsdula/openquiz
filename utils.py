@@ -116,7 +116,7 @@ def _questions_from_xlsx(filename: str) -> list[Question]:
     questions = []
     df = pd.read_excel(filename)
     for _, row in df.iterrows():
-        questions.append(Question(row["prompt"], row["answer"], row["value"]))
+        questions.append(Question(row["prompt"], row["answer"]))
     return questions
 
 
