@@ -4,6 +4,34 @@ from tkinter import filedialog
 import controls
 
 
+class viewWindow:
+    def __init__(self, qVar, scoreVar):
+        top = tk.Toplevel()
+        self.frame = tk.Frame(top)
+        self.frame.pack()
+        self.qVar = qVar
+        self.scoreVar = scoreVar
+        # question frame
+        self.qFrame = tk.Frame(self.frame, bg="blue")
+        self.qVar.set("Question goes here")
+        self.qText = tk.Label(
+            self.qFrame,
+            textvariable=self.qVar,
+            font=("Helvetica", 24),
+            wraplength=1000,
+            justify="center",
+        )
+        self.qFrame.pack(pady=20)
+        self.qText.pack(pady=20)
+        # score frame
+        self.scoreFrame = tk.Frame(self.frame, bg="green")
+        self.scoreVar.set("Score goes here")
+        self.scoreText = tk.Label(
+            self.scoreFrame, textvariable=self.scoreVar, font=("Helvetica", 24)
+        ).grid(row=0, column=1)
+        self.scoreFrame.pack(pady=20)
+
+
 class GamePage(tk.Frame):
     def __init__(self, parent, controller):
         self.parent = parent
@@ -13,6 +41,9 @@ class GamePage(tk.Frame):
         self.scoreVar = tk.StringVar()
         self.file = ""
         self.createWidgets()
+
+    def openView(self, qVar, scoreVar):
+        self.view = viewWindow(qVar, scoreVar)
 
     def createWidgets(self):
         # game page frame
@@ -75,6 +106,7 @@ class GamePage(tk.Frame):
         while game.flag:
             team_count = len(game.teams)
             okVar = tk.IntVar()
+            self.openView(qVar=self.qVar, scoreVar=self.scoreVar)
 
             def endGame():
                 game.flag = False
@@ -84,7 +116,9 @@ class GamePage(tk.Frame):
             for question in game.rounds.questions:
                 self.left_correct_button.configure(
                     command=lambda: [
-                        controls.correct_answer(game.teams[0], game.teams[0].members[0], question),
+                        controls.correct_answer(
+                            game.teams[0], game.teams[0].members[0], question
+                        ),
                         okVar.set(1),
                     ]
                 )
@@ -93,7 +127,9 @@ class GamePage(tk.Frame):
                 )
                 self.right_correct_button.configure(
                     command=lambda: [
-                        controls.correct_answer(game.teams[1], game.teams[1].members[0], question),
+                        controls.correct_answer(
+                            game.teams[1], game.teams[1].members[0], question
+                        ),
                         okVar.set(1),
                     ]
                 )
