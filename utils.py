@@ -80,3 +80,10 @@ def get_questions_from_file(filename: str) -> list[Question]:
 def build_player(name: str) -> Player:
     """Builds a Player object"""
     return Player(name)
+
+def build_team(members: List[str], name: str | None) -> Team:
+    """Builds a Team object"""
+    players = [build_player(p) for p in members]
+    if name is None:
+        name = members[0]
+    return Team(members=players, name=name)
