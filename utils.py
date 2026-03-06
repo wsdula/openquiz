@@ -56,24 +56,25 @@ class Game:
             setattr(self, k, v)
 
 
-def get_questions_from_file(filename: str) -> list[Question]:
-    """Reads questions from a file and returns a list of Question objects"""
+def get_questions_from_file(filename: str) -> List[dict]:
+    """Reads questions from a file and returns a list of questions formatted in a dict"""
     # NOTE This is a good place to use the strategy pattern
     # NOTE This will eventually be a paired with a database call
+    # NOTE The actual question object should be created via the format!!!
     questions = []
     if filename.endswith(".txt"):
         with open(filename, "r") as f:
             # FIXME: This is not the best way to read from a file
             for line in f:
                 prompt, answer = line.split(";")
-                questions.append(Question(prompt, answer))
+                questions.append({prompt:prompt, answer:answer})
     elif filename.endswith(".json"):
         with open(filename, "r") as f:
             import json
 
             g = json.load(f)
             for q in g["questions"]:
-                questions.append(Question(**q))
+                questions.append(q)
     return questions
 
 
