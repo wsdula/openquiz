@@ -2,7 +2,6 @@ from typing import List, Union
 
 
 class Player:
-    # TODO: Redefine this class to be more useful
     def __init__(self, name: str, score: int = 0, **kwargs):
         self.name = name
         self.score = score
@@ -72,7 +71,6 @@ def build_team(members: List[str], name: str | None) -> Team:
 def get_questions_from_file(filename: str) -> List[dict]:
     """Reads questions from a file and returns a list of questions formatted in a dict"""
     # NOTE This is a good place to use the strategy pattern
-    # NOTE This will eventually be a paired with a database call
     # NOTE The actual question object should be created in the format!!!
     questions = []
     if filename.endswith(".txt"):
