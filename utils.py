@@ -1,18 +1,6 @@
 from typing import List, Union
 
 
-# Questions have a prompt and an answer and a value
-class Question:
-    def __init__(self, prompt: str, answer: str, value: int, **kwargs):
-        # NOTE: Eventually this will be a unique identifier for each Question in database
-        self.id = None
-        self.prompt = prompt
-        self.answer = answer
-        self.value = value
-        for k, v in kwargs.items():
-            setattr(self, k, v)
-
-
 class Player:
     # TODO: Redefine this class to be more useful
     def __init__(self, name: str, score: int = 0, **kwargs):
@@ -41,6 +29,18 @@ class Team:
         self.score = sum(member.score for member in self.members)
 
 
+# Questions have a prompt and an answer and a value
+class Question:
+    def __init__(self, prompt: str, answer: str, value: int, **kwargs):
+        # NOTE: Eventually this will be a unique identifier for each Question in database
+        self.id = None
+        self.prompt = prompt
+        self.answer = answer
+        self.value = value
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+
+
 class Round:
     def __init__(self, questions: List[Question], **kwargs):
         self.questions = questions
@@ -56,18 +56,31 @@ class Game:
             setattr(self, k, v)
 
 
+def build_player(name: str) -> Player:
+    """Builds a Player object"""
+    return Player(name)
+
+
+def build_team(members: List[str], name: str | None) -> Team:
+    """Builds a Team object"""
+    players = [build_player(p) for p in members]
+    if name is None:
+        name = members[0]
+    return Team(members=players, name=name)
+
+
 def get_questions_from_file(filename: str) -> List[dict]:
     """Reads questions from a file and returns a list of questions formatted in a dict"""
     # NOTE This is a good place to use the strategy pattern
     # NOTE This will eventually be a paired with a database call
-    # NOTE The actual question object should be created via the format!!!
+    # NOTE The actual question object should be created in the format!!!
     questions = []
     if filename.endswith(".txt"):
         with open(filename, "r") as f:
             # FIXME: This is not the best way to read from a file
             for line in f:
                 prompt, answer = line.split(";")
-                questions.append({prompt:prompt, answer:answer})
+                questions.append({prompt: prompt, answer: answer})
     elif filename.endswith(".json"):
         with open(filename, "r") as f:
             import json
@@ -76,15 +89,3 @@ def get_questions_from_file(filename: str) -> List[dict]:
             for q in g["questions"]:
                 questions.append(q)
     return questions
-
-
-def build_player(name: str) -> Player:
-    """Builds a Player object"""
-    return Player(name)
-
-def build_team(members: List[str], name: str | None) -> Team:
-    """Builds a Team object"""
-    players = [build_player(p) for p in members]
-    if name is None:
-        name = members[0]
-    return Team(members=players, name=name)
