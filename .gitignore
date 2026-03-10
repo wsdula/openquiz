@@ -1,3 +1,7 @@
 venv
 requirements.txt
 requirements.txt
+.python-version
+test.db
+uv.lock
+venv
