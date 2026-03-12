@@ -1,10 +1,16 @@
 import sqlite3
 
-file = "test.db"
+name = "test.db"
 
-try:
-    with sqlite3.connect(file) as conn:
-        print(f"database {file} formed")
 
-except:
-    print(f"database {file} not formed")
+def create_db(path: str, filename: str) -> None:
+    fullpath = path + filename
+    try:
+        with sqlite3.connect(fullpath) as conn:
+            print(f"database {fullpath} formed")
+
+    except:
+        print(f"database {fullpath} not formed")
+
+
+create_db("./",name)
