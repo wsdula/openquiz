@@ -78,7 +78,10 @@ class TriviaDB:
         except sqlite3.Error as e:
             print(f"An error occurred: {e}")
 
-    def add_question(self, question_data: Dict):
+    def add_question(self, question_data: Dict) -> int | None:
+        """
+        This function adds questions to the questions table of the database. It takes a dict with members prompt, answer, category and value.
+        """
         with self._connect() as conn:
             query = """
             INTER INTO questions
