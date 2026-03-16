@@ -2,21 +2,17 @@ from typing import List, Union, Optional
 from dataclasses import dataclass, field
 
 
+@dataclass
 class Player:
-    def __init__(self, name: str, score: int = 0, **kwargs):
-        self.name = name
-        self.score = score
-        for k, v in kwargs.items():
-            setattr(self, k, v)
+    name: str
+    score: int = 0
 
 
+@dataclass
 class Team:
-    def __init__(self, name: str, members: List[Player], score: int = 0, **kwargs):
-        self.name = name
-        self.members = members
-        self.score = score
-        for k, v in kwargs.items():
-            setattr(self, k, v)
+    name: str
+    members: List[Player]
+    score: int = 0
 
     def __str__(self):
         return f"Team: {self.name}"
@@ -25,8 +21,7 @@ class Team:
         return f"Team: {self.name}"
 
     # NOTE: Opportunity for the strategy pattern???
-    def UpdateTeamScore(self):
-        self.score = sum(member.score for member in self.members)
+    # TODO: Add Update Score function elsewhere
 
 
 # Questions have a prompt and an answer and a value
