@@ -1,4 +1,5 @@
-from typing import List, Union
+from typing import List, Union, Optional
+from dataclasses import dataclass, field
 
 
 class Player:
@@ -29,22 +30,18 @@ class Team:
 
 
 # Questions have a prompt and an answer and a value
+@dataclass(frozen=True)
 class Question:
-    def __init__(self, prompt: str, answer: str, value: int, **kwargs):
-        # NOTE: Eventually this will be a unique identifier for each Question in database
-        self.id = None
-        self.prompt = prompt
-        self.answer = answer
-        self.value = value
-        for k, v in kwargs.items():
-            setattr(self, k, v)
+    prompt: str
+    answer: str
+    value: int
+    category: Optional[str] = None
+    wrong_answers: Optional[List[str]] = None
 
 
+@dataclass
 class Round:
-    def __init__(self, questions: List[Question], **kwargs):
-        self.questions = questions
-        for k, v in kwargs.items():
-            setattr(self, k, v)
+    questions: List[Question] = field(default_factory=list)
 
 
 class Game:
