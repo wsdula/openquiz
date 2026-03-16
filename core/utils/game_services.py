@@ -1,6 +1,12 @@
 # this file contains the functions that control the game
+from models.player import Player
+from models.team import Team
+from models.game import Game
+from models.round import Round
+from models.question import Question
 
-import utils
+
+from typing import List
 
 test_questions = "test.json"
 test_player = ["VillagerA", "VillagerB"]
@@ -19,7 +25,15 @@ def build_team(members: List[str], name: str | None) -> Team:
     return Team(members=players, name=name)
 
 
-def get_questions_from_file(filename: str) -> List[dict]:
+def update_player_score(p: Player, v: int) -> None:
+    p.score += v
+
+
+def update_team_score(t: Team) -> None:
+    t.score = sum(m.score for m in t.members)
+
+
+def get_questions_from_file(filename: str) -> List[Question]:
     """Reads questions from a file and returns a list of questions formatted in a dict"""
     # NOTE This is a good place to use the strategy pattern
     # NOTE The actual question object should be created in the format!!!
@@ -37,17 +51,19 @@ def get_questions_from_file(filename: str) -> List[dict]:
             g = json.load(f)
             for q in g["questions"]:
                 questions.append(q)
-    return questions
+
+    result = [Question(q["prompt"], q["answer"]) for q in questions]
+    return result
 
 
 def setup_game(filename: str = test_questions, players: list[str] = test_player):
     """
-    This function sets up the game using the utils.py functions
+    This function sets up the game using the py functions
     """
-    questions = utils.get_questions_from_file(filename)
-    members = [utils.build_player(name) for name in players]
-    teamList = [utils.Team("Team 1", [members[0]]), utils.Team("Team 2", [members[1]])]
-    return utils.Game(teams=teamList, rounds=utils.Round(questions), flag=True)
+    questions = get_questions_from_file(filename)
+    members = [build_player(name) for name in players]
+    teamList = [Team("Team 1", [members[0]]), Team("Team 2", [members[1]])]
+    return Game(teams=teamList, rounds=Round(questions), flag=True)
 
 
 def wrong_answer():
@@ -58,12 +74,12 @@ def wrong_answer():
     pass
 
 
-def correct_answer(team: utils.Team, player: utils.Player, question: utils.Question):
+def correct_answer(team: Team, player: Player, question: Question):
     """
     This function is called when the user chooses the correct answer
     """
-    player.score += question.value
-    team.UpdateTeamScore()
+    update_player_score(player, question.value)
+    update_team_score(team)
 
 
 def pick_player(team):
