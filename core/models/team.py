@@ -14,6 +14,3 @@ class Team:
 
     def __repr__(self):
         return f"Team: {self.name}"
-
-    # NOTE: Opportunity for the strategy pattern???
-    # TODO: Add Update Score function elsewhere
