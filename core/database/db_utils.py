@@ -2,7 +2,7 @@ from pathlib import Path
 import sqlite3
 from typing import Dict
 
-DB_PATH = Path("test.db")
+DB_PATH = Path("../../data/test.db")
 
 
 class TriviaDB:
