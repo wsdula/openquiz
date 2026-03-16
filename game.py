@@ -1,4 +1,4 @@
-import controls
+import core.utils.game_services
 
 # import utils
 
@@ -14,7 +14,7 @@ def gameLoop(game):
                 _ = input("Which team answered? (enter number): ")
                 try:
                     team = game.teams[int(_) - 1]
-                    player = controls.pick_player(team)
+                    player = pick_player(team)
                     break
                 except (IndexError, ValueError, TypeError):
                     print("Please enter a number that corresponds to a team")
@@ -22,10 +22,10 @@ def gameLoop(game):
             while True:
                 answer = input("Was the answer correct? (y/n): ")
                 if answer == "y":
-                    controls.correct_answer(team, player, question)
+                    correct_answer(team, player, question)
                     break
                 elif answer == "n":
-                    controls.wrong_answer()
+                    wrong_answer()
                     break
                 else:
                     print("Please enter a valid input")
@@ -42,4 +42,4 @@ def gameLoop(game):
 
 
 if __name__ == "__main__":
-    gameLoop(controls.setup_game())
+    gameLoop(setup_game())
