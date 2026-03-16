@@ -4,8 +4,6 @@ from models.team import Team
 from models.game import Game
 from models.round import Round
 from models.question import Question
-
-
 from typing import List
 
 test_questions = "test.json"
@@ -80,21 +78,6 @@ def correct_answer(team: Team, player: Player, question: Question):
     """
     update_player_score(player, question.value)
     update_team_score(team)
-
-
-def pick_player(team):
-    if isinstance(team.members, list):
-        while True:
-            try:
-                _ = input("Which player answered? (enter number): ")
-                player = team.members[int(_) - 1]
-                break
-            except (IndexError, ValueError, TypeError):
-                print("Please enter a number that corresponds to a player")
-
-    else:
-        player = team.members
-    return player
 
 
 def save_game():
