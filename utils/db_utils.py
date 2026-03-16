@@ -1,5 +1,6 @@
 from pathlib import Path
 import sqlite3
+from typing import Dict
 
 DB_PATH = Path("test.db")
 
@@ -9,17 +10,21 @@ class TriviaDB:
         self.db_path = db_path
         self._initialize_db()
 
+    SCHEMA_FUNCTIONS = [
+        "_create_collections_questions_table",
+        "_create_questions_table",
+        "_create_collections_table",
+    ]
+
     def _connect(self) -> sqlite3.Connection:
         conn = sqlite3.connect(self.db_path)
         conn.row_factory = sqlite3.Row
         return conn
 
-
     def _initialize_db(self):
         with self._connect() as conn:
-            self._create_questions_table(conn)
-            self._create_collections_table(conn)
-            self._create_collections_questions_table(conn)
+            for func_name in self.SCHEMA_FUNCTIONS:
+                getattr(self, func_name)(conn)
 
     def _create_questions_table(self, conn: sqlite3.Connection) -> None:
         try:
@@ -39,7 +44,7 @@ class TriviaDB:
 
         except sqlite3.Error as e:
             print(f"An error occurred: {e}")
-    
+
     def _create_collections_table(self, conn: sqlite3.Connection) -> None:
         try:
             query = """
@@ -72,5 +77,25 @@ class TriviaDB:
 
         except sqlite3.Error as e:
             print(f"An error occurred: {e}")
+
+    def add_question(self, question_data: Dict):
+        with self._connect() as conn:
+            query = """
+            INTER INTO questions
+            (prompt, answer, category, value)
+            VALUES (?, ?, ?, ?)
+            """
+
+            cur = conn.execute(
+                query,
+                (
+                    question_data["prompt"],
+                    question_data["answer"],
+                    question_data["category"],
+                    question_data["value"],
+                ),
+            )
+            return cur.lastrowid
+
 
 db = TriviaDB()
