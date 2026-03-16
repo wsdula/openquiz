@@ -6,6 +6,40 @@ test_questions = "test.json"
 test_player = ["VillagerA", "VillagerB"]
 
 
+def build_player(name: str) -> Player:
+    """Builds a Player object"""
+    return Player(name)
+
+
+def build_team(members: List[str], name: str | None) -> Team:
+    """Builds a Team object"""
+    players = [build_player(p) for p in members]
+    if name is None:
+        name = members[0]
+    return Team(members=players, name=name)
+
+
+def get_questions_from_file(filename: str) -> List[dict]:
+    """Reads questions from a file and returns a list of questions formatted in a dict"""
+    # NOTE This is a good place to use the strategy pattern
+    # NOTE The actual question object should be created in the format!!!
+    questions = []
+    if filename.endswith(".txt"):
+        with open(filename, "r") as f:
+            # FIXME: This is not the best way to read from a file
+            for line in f:
+                prompt, answer = line.split(";")
+                questions.append({prompt: prompt, answer: answer})
+    elif filename.endswith(".json"):
+        with open(filename, "r") as f:
+            import json
+
+            g = json.load(f)
+            for q in g["questions"]:
+                questions.append(q)
+    return questions
+
+
 def setup_game(filename: str = test_questions, players: list[str] = test_player):
     """
     This function sets up the game using the utils.py functions
@@ -39,12 +73,13 @@ def pick_player(team):
                 _ = input("Which player answered? (enter number): ")
                 player = team.members[int(_) - 1]
                 break
-            except (IndexError,ValueError,TypeError):
+            except (IndexError, ValueError, TypeError):
                 print("Please enter a number that corresponds to a player")
 
     else:
         player = team.members
     return player
+
 
 def save_game():
     """
