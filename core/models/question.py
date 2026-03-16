@@ -6,6 +6,6 @@ from typing import List, Optional
 class Question:
     prompt: str
     answer: str
-    value: int
+    value: int = 10
     category: Optional[str] = None
     wrong_answers: Optional[List[str]] = None
