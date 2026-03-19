@@ -23,12 +23,14 @@ def build_team(members: List[str], name: str | None) -> Team:
     return Team(members=players, name=name)
 
 
-def update_player_score(p: Player, v: int) -> None:
+def update_player_score(p: Player, v: int) -> Player:
     p.score += v
+    return p
 
 
-def update_team_score(t: Team) -> None:
+def update_team_score(t: Team) -> Team:
     t.score = sum(m.score for m in t.members)
+    return t
 
 
 def get_questions_from_file(filename: str) -> List[Question]:
