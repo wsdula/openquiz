@@ -1,6 +1,6 @@
 import tkinter as tk
 
-import controls
+import core.utils.game_services as gs
 
 
 class GamePage(tk.Frame):
@@ -10,7 +10,7 @@ class GamePage(tk.Frame):
         self.qVar = tk.StringVar()
         self.scoreVar = tk.StringVar()
         self.createWidgets()
-        self.gameLoop(controls.setup_game())
+        self.gameLoop(gs.build_game())
 
     def createWidgets(self):
         controller = self.controller
@@ -53,12 +53,12 @@ class GamePage(tk.Frame):
                 ]
                 self.correct_button.configure(
                     command=lambda: [
-                        controls.correct_answer(game, player, team),
+                        gs.correct_answer(game, player, team),
                         okVar.set(1),
                     ]
                 )
                 self.wrong_button.configure(
-                    command=lambda: [controls.wrong_answer(), okVar.set(1)]
+                    command=lambda: [gs.wrong_answer(), okVar.set(1)]
                 )
                 self.correct_button.wait_variable(okVar)
 
