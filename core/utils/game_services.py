@@ -6,7 +6,7 @@ from models.round import Round
 from models.question import Question
 from typing import List
 
-test_questions = "test.json"
+test_questions = "../tests/test.json"
 test_player = ["VillagerA", "VillagerB"]
 
 
