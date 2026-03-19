@@ -10,17 +10,24 @@ test_questions = "../tests/test.json"
 test_player = ["VillagerA", "VillagerB"]
 
 
-def build_player(name: str) -> Player:
+def _build_player(name: str) -> Player:
     """Builds a Player object"""
     return Player(name)
 
 
 def build_team(members: List[str], name: str | None) -> Team:
     """Builds a Team object"""
-    players = [build_player(p) for p in members]
+    players = [_build_player(p) for p in members]
     if name is None:
         name = members[0]
     return Team(members=players, name=name)
+
+
+def build_game(teams: List[Team], rounds: List[Round], **kwargs) -> Game:
+    """
+    This function builds a Game object from provided Team and Round objects.
+    """
+    return Game(teams=teams, rounds=rounds, **kwargs)
 
 
 def update_player_score(p: Player, v: int) -> Player:
@@ -44,7 +51,7 @@ def get_questions_from_file(filename: str) -> List[Question]:
             for line in f:
                 prompt, answer = line.split(";")
                 questions.append({prompt: prompt, answer: answer})
-    elif filename.endswith(".json"):
+    if filename.endswith(".json"):
         with open(filename, "r") as f:
             import json
 
@@ -54,16 +61,6 @@ def get_questions_from_file(filename: str) -> List[Question]:
 
     result = [Question(q["prompt"], q["answer"]) for q in questions]
     return result
-
-
-def setup_game(filename: str = test_questions, players: list[str] = test_player):
-    """
-    This function sets up the game using the py functions
-    """
-    questions = get_questions_from_file(filename)
-    members = [build_player(name) for name in players]
-    teamList = [Team("Team 1", [members[0]]), Team("Team 2", [members[1]])]
-    return Game(teams=teamList, rounds=Round(questions), flag=True)
 
 
 def wrong_answer():
