@@ -63,14 +63,6 @@ def get_questions_from_file(filename: str) -> List[Question]:
     return result
 
 
-def wrong_answer():
-    """
-    This function is called when the user chooses the wrong answer
-    Default behavior is to do nothing
-    """
-    pass
-
-
 def correct_answer(team: Team, player: Player, question: Question):
     """
     This function is called when the user chooses the correct answer
@@ -79,15 +71,9 @@ def correct_answer(team: Team, player: Player, question: Question):
     update_team_score(team)
 
 
-def save_game():
+def wrong_answer():
     """
-    This function saves the game
-    """
-    pass
-
-
-def change_score():
-    """
-    This function changes the score
+    This function is called when the user chooses the wrong answer
+    Default behavior is to do nothing
     """
     pass
