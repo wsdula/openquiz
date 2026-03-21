@@ -1,8 +1,3 @@
-# This application is a quiz game, where the user can choose a category and answer the questions.
-# Each question has 1 correct answer.
-# Each question is worth 10 points
-
-# Importing the necessary modules
 import tkinter as tk
 from format.default.ui import GamePage
 
@@ -62,5 +57,3 @@ class StartPage(tk.Frame):
         button2.pack(pady=10)
         button3.pack(pady=10)
         button4.pack(pady=10)
-
-
