@@ -4,7 +4,7 @@ from .team import Team
 
 
 class Game:
-    def __init__(self, teams: List[Team], rounds: Union[Round, List[Round]], **kwargs):
+    def __init__(self, teams: List[Team], rounds: List[Round], **kwargs):
         self.teams = teams
         self.rounds = rounds
         for k, v in kwargs.items():
