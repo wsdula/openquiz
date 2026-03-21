@@ -54,18 +54,10 @@ class StartPage(tk.Frame):
             text="Start Game",
             command=lambda: controller.show_frame("GameSetupPage"),
         )
-        button2 = tk.Button(
-            self, text="View Games", command=lambda: controller.show_frame("PageTwo")
-        )
-        button3 = tk.Button(
-            self,
-            text="Edit Player Database",
-            command=lambda: controller.show_frame("PageThree"),
-        )
+
         button4 = tk.Button(self, text="Exit", command=lambda: controller.close_out())
         button1.pack(pady=10)
-        button2.pack(pady=10)
-        button3.pack(pady=10)
+
         button4.pack(pady=10)
 
 
