@@ -1,6 +1,9 @@
 import tkinter as tk
 
+from core.models.game import Game
 import core.utils.game_services as gs
+
+FONT_CHOICE = ("Helvetica", 16)
 
 
 class GamePage(tk.Frame):
@@ -10,21 +13,22 @@ class GamePage(tk.Frame):
         self.qVar = tk.StringVar()
         self.scoreVar = tk.StringVar()
         self.createWidgets()
-        self.gameLoop(gs.build_game())
 
     def createWidgets(self):
         controller = self.controller
+
+        # Question Frame Definition
         self.qFrame = tk.Frame(self, bg="blue")
         self.qVar.set("Question goes here")
-        self.qText = tk.Label(
-            self.qFrame, textvariable=self.qVar, font=("Helvetica", 16)
-        )
+        self.qText = tk.Label(self.qFrame, textvariable=self.qVar, font=FONT_CHOICE)
         self.qFrame.pack(pady=20)
         self.qText.pack(pady=20)
+
+        # Score Frame Definition
         self.scoreFrame = tk.Frame(self, bg="green")
         self.scoreVar.set("Score goes here")
         self.scoreText = tk.Label(
-            self.scoreFrame, textvariable=self.scoreVar, font=("Helvetica", 16)
+            self.scoreFrame, textvariable=self.scoreVar, font=FONT_CHOICE
         )
         self.correct_button = tk.Button(self.scoreFrame, text="Correct")
         self.wrong_button = tk.Button(self.scoreFrame, text="Wrong")
@@ -32,6 +36,8 @@ class GamePage(tk.Frame):
         self.scoreText.pack(pady=20)
         self.correct_button.pack(pady=10)
         self.wrong_button.pack(pady=10)
+
+        # Exit Button
         exitbutton = tk.Button(
             self,
             text="Go to the start page",
@@ -39,27 +45,29 @@ class GamePage(tk.Frame):
         )
         exitbutton.pack(pady=11, anchor="se")
 
-    def gameLoop(self, game):
-        while game.flag:
-            team_count = len(game.teams)
-            for question in game.rounds.questions:
+
+def gameLoop(page: GamePage, game: Game):
+    while True:
+        team_count = len(game.teams)
+        for rd in game.rounds:
+            for i, q in enumerate(rd.questions):
                 okVar = tk.IntVar()
-                self.qVar.set(question.prompt)
-                # alternate between teams
-                team = game.teams[game.rounds.questions.index(question) % team_count]
-                # alternate between players
-                player = team.members[
-                    game.rounds.questions.index(question) % len(team.members)
-                ]
-                self.correct_button.configure(
+                page.qVar.set(q.prompt)
+
+                # Alternate between teams
+                team = game.teams[i % team_count]
+
+                # Alternate between players
+                player = team.members[i % len(team.members)]
+                page.correct_button.configure(
                     command=lambda: [
-                        gs.correct_answer(game, player, team),
+                        gs.correct_answer(team, player, q),
                         okVar.set(1),
                     ]
                 )
-                self.wrong_button.configure(
+                page.wrong_button.configure(
                     command=lambda: [gs.wrong_answer(), okVar.set(1)]
                 )
-                self.correct_button.wait_variable(okVar)
+                page.correct_button.wait_variable(okVar)
 
-            game.flag = False
+        break
