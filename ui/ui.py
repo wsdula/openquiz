@@ -1,7 +1,9 @@
 import tkinter as tk
-from format.default.ui import GamePage
+from format.default.ui import FONT_CHOICE, GamePage
 
 # import utils
+
+FONT_CHOICE = ("Helvetica", 16)
 
 
 class App(tk.Tk):
@@ -17,7 +19,7 @@ class App(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (StartPage, GamePage):
+        for F in (StartPage, GameSetupPage, GamePage):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -38,7 +40,7 @@ class StartPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-        label = tk.Label(self, text="Welcome to the Quiz Game!", font=("Helvetica", 16))
+        label = tk.Label(self, text="Welcome to the Quiz Game!", font=FONT_CHOICE)
         label.pack(side="top", fill="x", pady=20)
 
         button1 = tk.Button(
@@ -57,3 +59,11 @@ class StartPage(tk.Frame):
         button2.pack(pady=10)
         button3.pack(pady=10)
         button4.pack(pady=10)
+
+
+class GameSetupPage(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        label = tk.Label(self, text="Setup your game", font=FONT_CHOICE)
+        label.pack(side="top", fill="x", pady=20)
