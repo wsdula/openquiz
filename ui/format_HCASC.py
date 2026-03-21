@@ -1,11 +1,11 @@
-import utils
+import core.utils.game_services as gs
+from core.utils.models import Question, Team, Round, Player, Game
 import json
-import numpy
 
 
 # Tossup Questions are worth 10 points and have bonus questions if answered correctly
 class Tossup:
-    def __init__(self, faceoff: utils.Question, bonuses: list[utils.Question]):
+    def __init__(self, faceoff: Question, bonuses: list[Question]):
         self.faceoff = faceoff
         self.bonus = bonuses
         self.value = (
@@ -58,7 +58,7 @@ class Game:
         return f"Game: {self.rounds}"
 
 
-def build_tossup() -> Tossup:
+def build_tossup():
     """
     This function builds a Tossup object from a group of questions
     """
@@ -67,7 +67,7 @@ def build_tossup() -> Tossup:
     pass
 
 
-def build_round() -> Round:
+def build_round():
     """
     This function assembles a series of questions into a round object
     """
