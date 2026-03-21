@@ -1,4 +1,5 @@
 from core.utils.models import Player, Team, Round, Question, Game
+from pathlib import Path
 
 test_questions = "../tests/test.json"
 test_player = ["VillagerA", "VillagerB"]
@@ -32,6 +33,18 @@ def update_player_score(p: Player, v: int) -> Player:
 def update_team_score(t: Team) -> Team:
     t.score = sum(m.score for m in t.members)
     return t
+
+
+def list_formats(path: Path) -> list[str]:
+    """
+    Returns a list of known game formats in the filetree
+    """
+    ignore_dir = "__pycache__"
+    return [
+        item.name
+        for item in path.iterdir()
+        if item.is_dir() and item.name != ignore_dir
+    ]
 
 
 def get_questions_from_file(filename: str) -> list[Question]:
