@@ -1,9 +1,9 @@
 # this file contains the functions that control the game
-from models.player import Player
-from models.team import Team
-from models.game import Game
-from models.round import Round
-from models.question import Question
+from core.models.player import Player
+from core.models.team import Team
+from core.models.game import Game
+from core.models.round import Round
+from core.models.question import Question
 from typing import List
 
 test_questions = "../tests/test.json"
