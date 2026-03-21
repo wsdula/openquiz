@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from core.models.game import Game
+from core.utils.models import Game
 import core.utils.game_services as gs
 
 FONT_CHOICE = ("Helvetica", 16)
