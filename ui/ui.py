@@ -1,9 +1,15 @@
 import tkinter as tk
-from format.default.ui import FONT_CHOICE, GamePage
+from tkinter import ttk
+
+# from format.default.ui import GamePage
+import core.utils.game_services as gs
+from pathlib import Path
 
 # import utils
 
-FONT_CHOICE = ("Helvetica", 16)
+MAIN_FONT_CHOICE = ("Helvetica", 16)
+
+FORM_PATH = Path(__file__).parent.parent / "format"
 
 
 class App(tk.Tk):
@@ -19,7 +25,7 @@ class App(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (StartPage, GameSetupPage, GamePage):
+        for F in (StartPage, GameSetupPage):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -40,11 +46,13 @@ class StartPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-        label = tk.Label(self, text="Welcome to the Quiz Game!", font=FONT_CHOICE)
+        label = tk.Label(self, text="Welcome to the Quiz Game!", font=MAIN_FONT_CHOICE)
         label.pack(side="top", fill="x", pady=20)
 
         button1 = tk.Button(
-            self, text="Start Game", command=lambda: controller.show_frame("GamePage")
+            self,
+            text="Start Game",
+            command=lambda: controller.show_frame("GameSetupPage"),
         )
         button2 = tk.Button(
             self, text="View Games", command=lambda: controller.show_frame("PageTwo")
@@ -65,5 +73,11 @@ class GameSetupPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-        label = tk.Label(self, text="Setup your game", font=FONT_CHOICE)
+        label = tk.Label(self, text="Setup your game", font=MAIN_FONT_CHOICE)
         label.pack(side="top", fill="x", pady=20)
+
+        cb = ttk.Combobox(self, values=gs.list_formats(FORM_PATH))
+        cb.set("Pick a format")
+        cb.pack()
+        # TODO: Dynamically import gamePage object from chosen format
+        # TODO: Create Text Fields/Buttons to get game information
