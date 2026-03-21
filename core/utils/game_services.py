@@ -1,10 +1,4 @@
-# this file contains the functions that control the game
-from core.models.player import Player
-from core.models.team import Team
-from core.models.game import Game
-from core.models.round import Round
-from core.models.question import Question
-from typing import List
+from core.utils.models import Player, Team, Round, Question, Game
 
 test_questions = "../tests/test.json"
 test_player = ["VillagerA", "VillagerB"]
@@ -15,7 +9,7 @@ def _build_player(name: str) -> Player:
     return Player(name)
 
 
-def build_team(members: List[str], name: str | None) -> Team:
+def build_team(members: list[str], name: str | None) -> Team:
     """Builds a Team object"""
     players = [_build_player(p) for p in members]
     if name is None:
@@ -23,7 +17,7 @@ def build_team(members: List[str], name: str | None) -> Team:
     return Team(members=players, name=name)
 
 
-def build_game(teams: List[Team], rounds: List[Round], **kwargs) -> Game:
+def build_game(teams: list[Team], rounds: list[Round], **kwargs) -> Game:
     """
     This function builds a Game object from provided Team and Round objects.
     """
@@ -40,7 +34,7 @@ def update_team_score(t: Team) -> Team:
     return t
 
 
-def get_questions_from_file(filename: str) -> List[Question]:
+def get_questions_from_file(filename: str) -> list[Question]:
     """Reads questions from a file and returns a list of questions formatted in a dict"""
     # NOTE This is a good place to use the strategy pattern
     # NOTE The actual question object should be created in the format!!!
