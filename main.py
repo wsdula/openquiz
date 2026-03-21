@@ -4,7 +4,7 @@
 
 # Importing the necessary modules
 # import utils
-import ui
+import ui.ui as ui
 
 # window = tk.Tk()
 # greeting = tk.Label(text="Welcome to the Quiz Game!")
