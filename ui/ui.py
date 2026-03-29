@@ -71,5 +71,26 @@ class GameSetupPage(tk.Frame):
         cb = ttk.Combobox(self, values=gs.list_formats(FORM_PATH))
         cb.set("Pick a format")
         cb.pack()
+
+        team_spin_val = tk.IntVar(value=2)  # 2 teams by default
+        team_spinbox = tk.Spinbox(
+            self,
+            from_=1,
+            to=10,
+            width=5,
+            textvariable=team_spin_val,
+        )
+        team_spinbox.pack(pady=10)
+
+        player_spin_val = tk.IntVar(value=1)  # 2 players by default
+        player_spinbox = tk.Spinbox(
+            self,
+            from_=1,
+            to=10,
+            width=5,
+            textvariable=player_spin_val,
+        )
+        player_spinbox.pack(pady=10)
+
         # TODO: Dynamically import gamePage object from chosen format
         # TODO: Create Text Fields/Buttons to get game information
