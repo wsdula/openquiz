@@ -12,6 +12,22 @@ MAIN_FONT_CHOICE = ("Helvetica", 16)
 FORM_PATH = Path(__file__).parent.parent / "format"
 
 
+class LabeledSpinbox(tk.Frame):
+    def __init__(self, parent, label_text, **kwargs):
+        super().__init__(parent)
+
+        # Create and pack the label
+        self.label = tk.Label(self, text=label_text)
+        self.label.pack(side=tk.LEFT, padx=5)
+
+        # Create and pack the spinbox
+        self.spinbox = tk.Spinbox(self, **kwargs)
+        self.spinbox.pack(side=tk.LEFT)
+
+    def get(self):
+        return self.spinbox.get()
+
+
 class App(tk.Tk):
     def __init__(self):
         tk.Tk.__init__(self)
