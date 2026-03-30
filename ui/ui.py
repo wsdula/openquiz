@@ -88,25 +88,47 @@ class GameSetupPage(tk.Frame):
         cb.set("Pick a format")
         cb.pack()
 
-        team_spin_val = tk.IntVar(value=2)  # 2 teams by default
-        team_spinbox = tk.Spinbox(
-            self,
-            from_=1,
-            to=10,
-            width=5,
-            textvariable=team_spin_val,
-        )
-        team_spinbox.pack(pady=10)
+        self.chosen_format = cb.get()
 
-        player_spin_val = tk.IntVar(value=1)  # 2 players by default
-        player_spinbox = tk.Spinbox(
+        self.team_spinbox = LabeledSpinbox(
             self,
+            label_text="# of teams:",
             from_=1,
             to=10,
-            width=5,
-            textvariable=player_spin_val,
+            command=self.generate_textboxes,
         )
-        player_spinbox.pack(pady=10)
+        self.team_spinbox.pack(pady=10)
+
+        self.player_spinbox = LabeledSpinbox(
+            self,
+            label_text="# of players:",
+            from_=1,
+            to=10,
+            command=self.generate_textboxes,
+        )
+        self.player_spinbox.pack(pady=10)
+
+        self.playername_frame = ttk.Frame(self)
+        self.playername_frame.pack(pady=10)
+
+    def generate_textboxes(self) -> None:
+        try:
+            team_count = int(self.team_spinbox.get())
+            player_count = int(self.player_spinbox.get())
+        except ValueError:
+            team_count = 2
+            player_count = 1
+
+        for widget in self.playername_frame.winfo_children():
+            widget.destroy()
+
+        for i in range(team_count):
+            for j in range(player_count):
+                label = tk.Label(
+                    self.playername_frame, text=f"Team {i+1}, Player {j+1}:"
+                )
+                label.pack(side="top", anchor="w")
+                entry = tk.Entry(self.playername_frame)
+                entry.pack(side="top", fill="x", pady=2)
 
         # TODO: Dynamically import gamePage object from chosen format
-        # TODO: Create Text Fields/Buttons to get game information
