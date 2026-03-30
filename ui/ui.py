@@ -1,11 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
 
-# from format.default.ui import GamePage
 import core.utils.game_services as gs
 from pathlib import Path
-
-# import utils
+import importlib
 
 MAIN_FONT_CHOICE = ("Helvetica", 16)
 
@@ -84,12 +82,6 @@ class GameSetupPage(tk.Frame):
         label = tk.Label(self, text="Setup your game", font=MAIN_FONT_CHOICE)
         label.pack(side="top", fill="x", pady=20)
 
-        cb = ttk.Combobox(self, values=gs.list_formats(FORM_PATH))
-        cb.set("Pick a format")
-        cb.pack()
-
-        self.chosen_format = cb.get()
-
         self.team_spinbox = LabeledSpinbox(
             self,
             label_text="# of teams:",
@@ -110,6 +102,34 @@ class GameSetupPage(tk.Frame):
 
         self.playername_frame = ttk.Frame(self)
         self.playername_frame.pack(pady=10)
+
+        self.combo_text = tk.StringVar()
+        self.cb = ttk.Combobox(
+            self, textvariable=self.combo_text, values=gs.list_formats(FORM_PATH)
+        )
+        self.cb.set("Pick a format")
+        self.cb.pack()
+
+        self.cb.bind("<<ComboboxSelected>>", self.on_format_change)
+
+        self.format_options_container = tk.Frame(self)
+        self.format_options_container.pack(pady=10)
+
+    def on_format_change(self, event):
+        format_name = self.combo_text.get()
+        self.load_format_setup(format_name)
+
+    def load_format_setup(self, format_name):
+        # Destroy old frame
+        if self.format_options_container is not None:
+            self.format_options_container.destroy()
+
+        module = importlib.import_module(f"format.{format_name}.ui")
+
+        setup_class = getattr(module, "SetupFrame")
+
+        self.format_options_container = setup_class(self)
+        self.format_options_container.pack(pady=10)
 
     def generate_textboxes(self) -> None:
         try:
