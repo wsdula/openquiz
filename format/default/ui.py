@@ -6,6 +6,12 @@ import core.utils.game_services as gs
 FONT_CHOICE = ("Helvetica", 16)
 
 
+class SetupFrame(tk.Frame):
+    def __init__(self, parent):
+        tk.Frame.__init__(self, parent)
+        tk.Label(self, text="Default Game Setup Options").pack(pady=10)
+
+
 class GamePage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
